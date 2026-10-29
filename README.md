@@ -57,3 +57,6 @@ docs                spec, architecture, task split
 
 split is in [docs/TASKS.md](docs/TASKS.md), rules are in
 [CONTRIBUTING.md](CONTRIBUTING.md). gpl-3.0.
+
+talk to us in the ruin studio discord, `#relic`. commits and pulls land there
+automatically.
