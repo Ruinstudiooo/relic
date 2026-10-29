@@ -1,0 +1,10 @@
+services:
+  relic:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      RELIC_DATA_DIR: /app/apps/web/data/profiles
+    volumes:
+      - ./apps/web/data/profiles:/app/apps/web/data/profiles:ro
+    restart: unless-stopped
