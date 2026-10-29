@@ -1,8 +1,8 @@
 # contributing
 
-**branches** — `main` is protected. branch, open a PR, someone reads it.
+`main` is protected. branch, open a PR, one of us reads it.
 
-**before you push**
+before you push:
 
 ```
 npm run typecheck
@@ -10,15 +10,17 @@ npm test
 npm run build
 ```
 
-CI runs the same three. A PR that fails CI isn't reviewed until it's green.
+ci runs the same three in that order. red ci doesn't get reviewed, so fix it
+before you ask.
 
-**style** — no prettier config, just match the file you're editing. no tailwind, no
-component library, plain CSS in `app/globals.css`. if you need a dependency, say why
-in the PR body; the answer is usually no.
+no prettier config, no tailwind, no component library. plain css lives in
+`app/globals.css`. match whatever file you're editing. don't reformat a file you changed one line
+in. the diff is the only thing anyone reads in a hurry. new dependency? put the reason in the PR body. the answer is usually no,
+but it isn't always.
 
-**schema changes** — `packages/schema` is the contract between the renderer and the
-future editor. changing it means updating the tests in the same commit, and saying in
-the PR what happens to existing profile JSON.
+`packages/schema` is the contract between the renderer and the editor. if you
+change it, the tests change in the same commit, and the PR says what happens to
+json files people already have on disk.
 
-**claiming work** — everything is in [docs/TASKS.md](docs/TASKS.md) and mirrored as
-issues. comment on the issue before you start so two people don't build the same thing.
+claim work by commenting on the issue before you start. otherwise two of us
+build the same button twice and one of us throws it away.

@@ -3,10 +3,8 @@
 import { useEffect, useRef } from "react";
 import type { Effects as EffectsConfig } from "@relic/schema";
 
-/**
- * Everything here is opt-in per profile. With effects off this component renders
- * nothing and ships no listeners, which is why the page still works with JS disabled.
- */
+// opt in per profile. nothing configured means this renders nothing and attaches
+// no listeners, so the page is just the html the server sent.
 export default function Effects({ effects }: { effects: EffectsConfig }) {
   const dotRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
@@ -110,7 +108,8 @@ export default function Effects({ effects }: { effects: EffectsConfig }) {
 
     const tryPlay = () => {
       el.play().catch(() => {
-        /* browsers block autoplay until the first gesture — retry on that gesture */
+        // autoplay got blocked, which is what browsers do. try again on the
+        // first gesture instead of popping an unmute button at people.
         const once = () => {
           el.play().catch(() => {});
           window.removeEventListener("pointerdown", once);

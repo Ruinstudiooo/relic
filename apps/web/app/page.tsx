@@ -16,7 +16,7 @@ export default async function Home() {
         </p>
         <div className="links">
           {profiles.length === 0 ? (
-            <p className="bio">no profiles yet — drop a json file into data/profiles.</p>
+            <p className="bio">no profiles yet. drop a json file into data/profiles.</p>
           ) : (
             profiles.map((p) => (
               <Link key={p.slug} className="link" href={`/${p.slug}`}>

@@ -1,9 +1,7 @@
 import { z } from "zod";
 
-/**
- * The whole point of this package: a profile is a plain JSON file that both the
- * renderer and the editor agree on. If it doesn't parse here, it doesn't ship.
- */
+// the contract. a profile is json, both the renderer and the (future) editor
+// parse it through here, and if it doesn't parse it doesn't render or save.
 
 export const LINK_ICONS = [
   "discord", "github", "x", "instagram", "tiktok", "youtube",

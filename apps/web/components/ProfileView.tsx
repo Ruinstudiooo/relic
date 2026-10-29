@@ -1,5 +1,7 @@
 import type { Profile } from "@relic/schema";
 
+// unicode glyphs instead of an icon package. renders before any font or js
+// loads, and it's one less dependency to audit.
 const ICON_GLYPH: Record<string, string> = {
   discord: "\u25c8",
   github: "\u25cf",

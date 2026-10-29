@@ -2,11 +2,9 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { profileSchema, slugPattern, type Profile } from "@relic/schema";
 
-/**
- * v0.1 keeps profiles on disk so a self-host is one folder inside a volume.
- * Everything that reads a profile goes through here, so swapping in Postgres
- * later is one file instead of a rewrite.
- */
+// 0.1 reads json off disk so self hosting is one folder in a volume. everything
+// that wants a profile comes through here, which makes the database swap one
+// file and not a rewrite.
 
 export const DATA_DIR = process.env.RELIC_DATA_DIR ?? path.join(process.cwd(), "data", "profiles");
 

@@ -1,55 +1,59 @@
 # relic
 
-An open source alternative to guns.lol. Self-hosted bio pages that render on the
-server, so the link preview works, the crawler works, and the page still exists
-when the JavaScript doesn't.
+bio pages you host yourself. an alternative to guns.lol, written in next.js.
 
-No watermark. No account on someone else's server. One folder of JSON per profile.
+the point is server rendering. a guns.lol page is drawn by javascript, so when
+someone pastes your link in discord the embed is a blank rectangle and google
+indexes an empty div. relic sends the name, bio and links as html. effects load
+afterwards, and only if the profile asks for them.
+
+no watermark, no account on my server, one json file per profile.
 
 ```
 npm install
-npm run dev            # http://localhost:3000/demo
-docker compose up      # or this
+npm run dev          # localhost:3000/demo
+docker compose up    # same thing in a container
 ```
 
-## Why another one
+## why
 
-guns.lol and everything shaped like it are single-page apps that draw the page with
-JavaScript. That means a Discord embed of your page is a blank rectangle, Google
-indexes an empty div, and the whole thing stops working when the bundle breaks.
+guns.lol is fine, honestly. i just got tired of a page that stops existing when
+the bundle doesn't load.
 
-relic renders the profile as HTML on the server. Effects — audio, particles, custom
-cursor — hydrate afterwards and only if the profile asks for them. A profile with
-no effects ships zero client JavaScript.
+so `app/[slug]/page.tsx` is a server component, `ProfileView` is a server
+component, and the only `"use client"` in the tree is `Effects`, which returns
+null when a profile has nothing to play with.
 
-## What works today (v0.1)
+## what works in 0.1
 
-- `/{slug}` renders from `data/profiles/{slug}.json`, validated by zod
-- theme: accent colour, radius, background colour/image/video, blur
-- links with icons and a highlight state
-- opt-in effects: dot/ring cursor, particles, autoplay audio with gesture fallback
-- per-profile SEO: title, description, OG image, `noindex`
-- Docker image + compose file, data dir mounted read-only
+- `/{slug}` from `data/profiles/{slug}.json`, parsed with zod
+- accent colour, corner radius, background colour / image, blur
+- links with icons, one of them allowed to be highlighted
+- effects, opt in: dot or ring cursor, particles, audio
+- per profile title, description, og image, `noindex`
+- docker image and compose file, data dir mounted read only
 
-## What doesn't (yet)
+## what doesn't
 
-- no editor UI, no auth, no database — you edit JSON and redeploy
-- no analytics or view counter
-- no custom domains
-- video backgrounds render an `<img>`-style backdrop, not a `<video>` element
+- no editor, no login, no database. edit the json and redeploy
+- no view counter, no custom domains
+- video backgrounds get stored and then drawn as a still frame. #4 is where that
+  either becomes a `<video>` or stops being an option in the schema
+- next ships its hydration runtime even on a page with no client components.
+  ~100kB. i'm not going to pretend otherwise, and getting it to zero is 0.2 work
 
-## Layout
+## layout
 
 ```
-apps/web            next.js app (server components, no tailwind)
-  app/[slug]        the page itself
-  components        ProfileView (server) + Effects (client, opt-in)
-  data/profiles     profile JSON, one file per slug
-packages/schema     zod schema shared by renderer and future editor
+apps/web
+  app/[slug]        the page
+  components        ProfileView (server) + Effects (client, opt in)
+  data/profiles     json, one file per slug
+packages/schema     zod schema shared by the renderer and the future editor
 docs                spec, architecture, task split
 ```
 
-## Contributing
+## contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/TASKS.md](docs/TASKS.md) for who is
-on what. GPL-3.0.
+split is in [docs/TASKS.md](docs/TASKS.md), rules are in
+[CONTRIBUTING.md](CONTRIBUTING.md). gpl-3.0.
