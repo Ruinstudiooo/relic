@@ -1,12 +1,15 @@
 {
   "slug": "demo",
-  "name": "demo",
-  "bio": "this is what a relic page looks like. edit the json, reload, done.",
-  "status": "building relic",
+  "name": "relic",
+  "bio": "bio pages you host yourself. server rendered, so your name and links are in the html before a single script loads. edit one json file, reload, done.",
+  "status": "building in public",
   "links": [
-    { "label": "github", "url": "https://github.com/Ruinstudiooo/relic", "icon": "github", "highlight": true },
-    { "label": "ruinstudio", "url": "https://github.com/Ruinstudiooo", "icon": "website" }
+    { "label": "star it on github", "url": "https://github.com/Ruinstudiooo/relic", "icon": "github", "highlight": true },
+    { "label": "read the spec", "url": "https://github.com/Ruinstudiooo/relic/blob/main/docs/SPEC.md", "icon": "custom" },
+    { "label": "how it's built", "url": "https://github.com/Ruinstudiooo/relic/blob/main/docs/ARCHITECTURE.md", "icon": "github" },
+    { "label": "ruin studio", "url": "https://github.com/Ruinstudiooo", "icon": "website" }
   ],
-  "theme": { "accent": "#7c5cff", "radius": 12 },
-  "effects": { "cursor": "dot", "particles": { "enabled": true, "density": 30 } }
+  "theme": { "accent": "#7c5cff", "radius": 14 },
+  "effects": { "cursor": "ring", "particles": { "enabled": true, "density": 70 }, "tilt": true },
+  "seo": { "title": "relic · self-hosted bio pages", "description": "bio pages you host yourself. server rendered, no watermark, one json file per profile." }
 }
