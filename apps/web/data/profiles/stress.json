@@ -1,0 +1,148 @@
+{
+  "slug": "stress",
+  "name": "stress test",
+  "bio": "relic stress profile verifying 24 links scroll within the card on desktop and mobile viewports, video background playback, no avatar fallback initial, accessible dual-ring focus states, dynamic font rendering, and zero layout shift across 320px, 768px, and 1440px displays. ------",
+  "status": "stress testing layout",
+  "links": [
+    {
+      "label": "github",
+      "url": "https://github.com/Ruinstudiooo/relic",
+      "icon": "github",
+      "highlight": true
+    },
+    {
+      "label": "documentation",
+      "url": "https://github.com/Ruinstudiooo/relic#readme",
+      "icon": "website"
+    },
+    {
+      "label": "discord community",
+      "url": "https://discord.gg/relic",
+      "icon": "discord"
+    },
+    {
+      "label": "project roadmap",
+      "url": "https://github.com/Ruinstudiooo/relic/issues",
+      "icon": "website"
+    },
+    {
+      "label": "release notes",
+      "url": "https://github.com/Ruinstudiooo/relic/releases",
+      "icon": "website"
+    },
+    {
+      "label": "twitter updates",
+      "url": "https://x.com/ruinstudio",
+      "icon": "x"
+    },
+    {
+      "label": "source mirror",
+      "url": "https://github.com/Ruinstudiooo",
+      "icon": "github"
+    },
+    {
+      "label": "youtube channel",
+      "url": "https://youtube.com/@relic",
+      "icon": "youtube"
+    },
+    {
+      "label": "spotify playlist",
+      "url": "https://spotify.com",
+      "icon": "spotify"
+    },
+    {
+      "label": "telegram channel",
+      "url": "https://t.me/relic",
+      "icon": "telegram"
+    },
+    {
+      "label": "instagram",
+      "url": "https://instagram.com/relic",
+      "icon": "instagram"
+    },
+    {
+      "label": "tiktok stream",
+      "url": "https://tiktok.com/@relic",
+      "icon": "tiktok"
+    },
+    {
+      "label": "status page",
+      "url": "https://status.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "security contact",
+      "url": "mailto:security@example.com",
+      "icon": "email"
+    },
+    {
+      "label": "support desk",
+      "url": "https://support.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "press kit",
+      "url": "https://press.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "blog archive",
+      "url": "https://blog.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "sponsor project",
+      "url": "https://github.com/sponsors/Ruinstudiooo",
+      "icon": "custom"
+    },
+    {
+      "label": "community forum",
+      "url": "https://forum.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "changelog",
+      "url": "https://changelog.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "developer guide",
+      "url": "https://docs.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "brand assets",
+      "url": "https://brand.example.com",
+      "icon": "website"
+    },
+    {
+      "label": "license agreement",
+      "url": "https://github.com/Ruinstudiooo/relic/blob/main/LICENSE",
+      "icon": "website"
+    },
+    {
+      "label": "backup archive",
+      "url": "https://archive.example.com",
+      "icon": "custom"
+    }
+  ],
+  "theme": {
+    "background": {
+      "type": "video",
+      "value": "https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-seen-from-the-sky-in-a-sunset-26070-large.mp4",
+      "blur": 4
+    },
+    "accent": "#7c5cff",
+    "text": "auto",
+    "font": "jetbrains-mono",
+    "radius": 14
+  },
+  "effects": {
+    "cursor": "ring",
+    "particles": {
+      "enabled": true,
+      "density": 40
+    },
+    "tilt": true
+  }
+}
