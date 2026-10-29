@@ -3,9 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { Effects as EffectsConfig } from "@relic/schema";
 
-// opt in per profile. nothing configured means this renders nothing and attaches
-// no listeners, so the page is just the html the server sent.
-export default function Effects({ effects }: { effects: EffectsConfig }) {
+function ActiveEffects({ effects }: { effects: EffectsConfig }) {
   const dotRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -128,6 +126,10 @@ export default function Effects({ effects }: { effects: EffectsConfig }) {
     };
   }, [effects.audio]);
 
+  if (!effects.particles.enabled && !wantsCursor) {
+    return null;
+  }
+
   return (
     <>
       {effects.particles.enabled ? <canvas ref={canvasRef} className="particles" aria-hidden /> : null}
@@ -139,4 +141,17 @@ export default function Effects({ effects }: { effects: EffectsConfig }) {
       ) : null}
     </>
   );
+}
+
+// opt in per profile. nothing configured means this renders nothing and attaches
+// no listeners, so the page is just the html the server sent.
+export default function Effects({ effects }: { effects: EffectsConfig }) {
+  const wantsCursor = effects.cursor === "dot" || effects.cursor === "ring" || effects.cursor === "glow";
+  const hasEffects = wantsCursor || effects.particles.enabled || Boolean(effects.audio) || Boolean(effects.tilt);
+
+  if (!hasEffects) {
+    return null;
+  }
+
+  return <ActiveEffects effects={effects} />;
 }
