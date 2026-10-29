@@ -5,6 +5,9 @@
   --accent: #7c5cff;
   --radius: 12px;
   --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --glass: rgba(255, 255, 255, 0.035);
+  --line: rgba(255, 255, 255, 0.09);
+  --live: #3ddc97;
 }
 
 * { box-sizing: border-box; }
@@ -22,114 +25,382 @@ body {
 
 a { color: inherit; }
 
+::selection { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+
+/* page + ambient aurora. pure css, so it's there with js off too */
+
 .page {
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: 48px 20px;
+  padding: 56px 16px;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: fixed;
+  z-index: -2;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.22;
+  pointer-events: none;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+
+.page::before {
+  background: radial-gradient(circle, var(--accent), transparent 65%);
+  top: -35vmax;
+  left: -20vmax;
+}
+
+.page::after {
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 50%, #00d4ff), transparent 65%);
+  bottom: -40vmax;
+  right: -25vmax;
+  opacity: 0.14;
+  animation-duration: 28s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(8vmax, 6vmax, 0) scale(1.15); }
 }
 
 .backdrop {
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  inset: -40px;
+  z-index: -3;
   background-position: center;
   background-size: cover;
 }
 
+/* card */
+
 .card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 0%;
   width: 100%;
-  max-width: 520px;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   align-items: center;
   text-align: center;
+  padding: 40px 28px 28px;
+  border-radius: calc(var(--radius) * 2);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(600px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 10%, transparent), transparent 45%),
+    var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 30px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow-wrap: anywhere;
+  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+
+.card.is-tilting { transition: transform 80ms linear; }
+
+/* animates translate/scale, not transform, so tilt and hover still work after it */
+@keyframes rise {
+  from { opacity: 0; translate: 0 18px; scale: 0.98; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+
+/* avatar with a slowly turning accent ring */
+
+.avatar-wrap {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+}
+
+.avatar-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, var(--accent), transparent 35%, color-mix(in srgb, var(--accent) 40%, #fff) 60%, transparent 80%, var(--accent));
+  animation: spin 6s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+}
+
+.avatar-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: inherit;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%);
+  z-index: -1;
+  filter: blur(8px);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .avatar {
   width: 96px;
   height: 96px;
   border-radius: 999px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #111;
+  background: #0e0e12;
 }
 
 .avatar-fallback {
   display: grid;
   place-items: center;
-  font-size: 34px;
-  font-weight: 600;
-  color: var(--accent);
+  font-size: 38px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--accent) 65%, #fff);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 
-.name { font-size: 26px; font-weight: 650; margin: 0; letter-spacing: -0.02em; }
+.avatar-live {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--live);
+  border: 3px solid #0b0b0f;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 60%, transparent);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 55%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 10px transparent; }
+}
+
+/* identity */
+
+.identity { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.name {
+  font-size: clamp(26px, 6vw, 32px);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #fff 30%, color-mix(in srgb, var(--accent) 55%, #fff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
 
 .status {
   margin: 0;
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--muted);
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  padding: 5px 12px 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--live);
+  box-shadow: 0 0 10px var(--live);
+}
 
-.bio { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); max-width: 42ch; white-space: pre-wrap; }
+.bio {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--fg) 72%, transparent);
+  max-width: 40ch;
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
 
-.links { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+/* links */
+
+.links { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
 
 .link {
-  display: flex;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: 14px;
+  padding: 12px 16px 12px 12px;
+  text-align: left;
   text-decoration: none;
   border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 14px;
-  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 14.5px;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+  animation: rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(180ms + var(--i, 0) * 60ms);
 }
 
-.link:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--accent) 60%, transparent); background: rgba(255, 255, 255, 0.07); }
-.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.link--highlight { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
-.link-arrow { color: var(--muted); font-size: 12px; }
+.link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, rgba(255, 255, 255, 0.03));
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+}
 
-.cursor-dot {
+.link:active { transform: translateY(0) scale(0.99); }
+
+.link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.link-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--radius) - 3px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.link:hover .link-icon { background: var(--accent); color: #fff; border-color: transparent; }
+
+.link-icon-svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.link-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.link-label { font-weight: 600; letter-spacing: -0.01em; }
+.link-host {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link-arrow {
+  color: var(--muted);
+  font-size: 14px;
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.link:hover .link-arrow { transform: translateX(4px); color: var(--fg); }
+
+/* the highlighted link gets a slowly travelling accent border */
+
+.link--highlight {
+  border-color: transparent;
+  background:
+    linear-gradient(color-mix(in srgb, var(--accent) 10%, #0c0c11), color-mix(in srgb, var(--accent) 10%, #0c0c11)) padding-box,
+    linear-gradient(var(--angle, 120deg), var(--accent), transparent 40%, color-mix(in srgb, var(--accent) 50%, #fff) 70%, var(--accent)) border-box;
+  animation: rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both, sweep 5s linear infinite;
+  animation-delay: calc(180ms + var(--i, 0) * 60ms), 0s;
+}
+
+.link--highlight .link-icon { background: var(--accent); color: #fff; border-color: transparent; }
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 120deg;
+}
+
+@keyframes sweep { to { --angle: 480deg; } }
+
+/* effects. hidden until a real pointer moves, so touch screens never see them */
+
+.cursor-dot,
+.cursor-ring,
+.cursor-glow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 10px;
-  height: 10px;
   border-radius: 999px;
-  background: var(--accent);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
   z-index: 99;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
+  box-shadow: 0 0 12px var(--accent);
 }
 
 .cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid var(--accent);
-  pointer-events: none;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 80%, #fff);
   z-index: 98;
-  transform: translate(-50%, -50%);
-  transition: width 160ms ease, height 160ms ease;
+  transition: opacity 200ms ease, width 200ms ease, height 200ms ease, background 200ms ease, border-color 200ms ease;
 }
 
-.particles { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.cursor-ring.is-hover {
+  width: 56px;
+  height: 56px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--accent);
+}
+
+.cursor-glow {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent), transparent 65%);
+  z-index: -1;
+}
+
+.is-visible { opacity: 1; }
+
+html.relic-cursor,
+html.relic-cursor * { cursor: none !important; }
+
+.particles { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
 .footer { font-size: 11px; color: #5a5a63; text-decoration: none; }
+
+/* small screens */
+
+@media (max-width: 380px) {
+  .card { padding: 32px 18px 20px; }
+  .link { gap: 12px; padding: 10px 12px 10px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -30,6 +30,19 @@ describe("Effects", () => {
 
     const { container } = render(<Effects effects={cursorEffects} />);
     expect(container.querySelector(".cursor-dot")).not.toBeNull();
+    // "dot" means a dot. the trailing ring belongs to cursor: "ring"
+    expect(container.querySelector(".cursor-ring")).toBeNull();
+  });
+
+  it("renders a dot and a trailing ring for the ring cursor", () => {
+    const ringEffects: EffectsConfig = {
+      cursor: "ring",
+      particles: { enabled: false, density: 40 },
+      tilt: false,
+    };
+
+    const { container } = render(<Effects effects={ringEffects} />);
+    expect(container.querySelector(".cursor-dot")).not.toBeNull();
     expect(container.querySelector(".cursor-ring")).not.toBeNull();
   });
 
