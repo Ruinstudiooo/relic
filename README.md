@@ -31,6 +31,10 @@ null when a profile has nothing to play with.
 - links with icons, one of them allowed to be highlighted
 - effects, opt in: dot or ring cursor, particles, audio
 - per profile title, description, og image, `noindex`
+- `/sitemap.xml`, `/robots.txt`, a web manifest, and a generated 1200x630 share
+  card for every profile, so the discord embed isn't a grey rectangle
+- `/api/health` for compose and anything else that needs to know the volume is
+  still readable
 - docker image and compose file, data dir mounted read only
 
 ## what doesn't
@@ -46,12 +50,21 @@ null when a profile has nothing to play with.
 
 ```
 apps/web
-  app/[slug]        the page
+  app/[slug]        the page, plus the share card it generates
+  app/(index)       the list of profiles
+  api/health        is it up, can it read the volume
   components        ProfileView (server) + Effects (client, opt in)
   data/profiles     json, one file per slug
 packages/schema     zod schema shared by the renderer and the future editor
 docs                spec, architecture, task split
 ```
+
+## hosting it
+
+`RELIC_BASE_URL` is the only env var that matters. it's the origin written into
+robots.txt, the sitemap and the share cards, so set it to the address people
+actually type and not `localhost`. compose reads it from the environment and
+falls back to `http://localhost:3000`.
 
 ## contributing
 
