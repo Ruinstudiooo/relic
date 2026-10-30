@@ -4,9 +4,15 @@
 packages/schema     zod schema + types
 apps/web            next.js app router
   app/[slug]        server component. reads the json, renders the html
+  app/[slug]/opengraph-image  the 1200x630 card discord and twitter show
+  app/(index)       the list, in a route group so its loading skeleton doesn't
+                    wrap the profile route (a suspense boundary upstream of
+                    notFound() turns every bad slug into a 200)
+  app/api/health    liveness plus a read of the data dir
   components/       ProfileView is server, Effects is the one client file
   data/profiles     storage for 0.1
   lib/profiles.ts   the only code that touches disk
+  lib/site.ts       the origin, in one place, for robots / sitemap / cards
 ```
 
 ## why it looks like this
@@ -38,6 +44,12 @@ out under `prefers-reduced-motion`.
 ISR at 60s. edit a profile and it's live within a minute with no rebuild. static
 only would mean redeploying to change a bio, and no cache at all would hit the
 disk on every request.
+
+Metadata is generated, not written. `robots.ts`, `sitemap.ts`, `manifest.ts` and
+`opengraph-image.tsx` are all functions over the same profile list, so nothing
+can drift out of sync with what's actually in `data/profiles`. the cards are
+satori, which means no headless browser in the image and no font download at
+request time. `RELIC_BASE_URL` is the single origin they all use.
 
 ## sharp edges
 

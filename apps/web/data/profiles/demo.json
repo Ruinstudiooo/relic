@@ -11,5 +11,5 @@
   ],
   "theme": { "accent": "#7c5cff", "radius": 14 },
   "effects": { "cursor": "ring", "particles": { "enabled": true, "density": 70 }, "tilt": true },
-  "seo": { "title": "relic · self-hosted bio pages", "description": "bio pages you host yourself. server rendered, no watermark, one json file per profile." }
+  "seo": { "title": "bio pages you host yourself", "description": "bio pages you host yourself. server rendered, no watermark, one json file per profile." }
 }

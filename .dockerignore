@@ -1,0 +1,14 @@
+# nothing here is needed to build the image
+node_modules
+**/node_modules
+.next
+**/.next
+.git
+.gitignore
+*.log
+coverage
+**/coverage
+docs
+README.md
+CONTRIBUTING.md
+LICENSE

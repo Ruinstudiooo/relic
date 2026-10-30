@@ -5,6 +5,19 @@ services:
       - "3000:3000"
     environment:
       RELIC_DATA_DIR: /app/apps/web/data/profiles
+      # set this to the address people actually type. it is what robots.txt,
+      # the sitemap and the share cards use for absolute urls.
+      RELIC_BASE_URL: ${RELIC_BASE_URL:-http://localhost:3000}
     volumes:
       - ./apps/web/data/profiles:/app/apps/web/data/profiles:ro
     restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
