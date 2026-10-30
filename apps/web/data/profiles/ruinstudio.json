@@ -1,0 +1,13 @@
+{
+  "slug": "ruinstudio",
+  "name": "ruin studio",
+  "bio": "open source things built by people who should know better. relic is the first one out the door.",
+  "status": "shipping relic",
+  "links": [
+    { "label": "github", "url": "https://github.com/Ruinstudiooo", "icon": "github", "highlight": true },
+    { "label": "relic", "url": "https://github.com/Ruinstudiooo/relic", "icon": "website" },
+    { "label": "discord", "url": "https://discord.gg/6UvQD8HHRe", "icon": "discord" }
+  ],
+  "theme": { "accent": "#ff5c5c", "radius": 14 },
+  "effects": { "cursor": "ring" }
+}
